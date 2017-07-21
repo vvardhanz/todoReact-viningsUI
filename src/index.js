@@ -14,12 +14,18 @@ class App extends Component
   constructor(props) {
     super(props);
 
-    this.state = { videos: [] };
+    this.state = {
+      videos: [],
+      selectedVideo: nill
+   };
 
     //Call the search function
     YTSearch( { key:API_KEY, term: 'surfboarfs'},
-      (videos) => {
-          this.setState({ videos }); //videos: videos in ES6 when key value same then u can condense it.
+        (videos) => {
+          this.setState({
+            videos: videos,
+            selectedVideo: videos[0]
+        }); //videos: videos in ES6 when key value same then u can condense it.
       }
     );
  }
@@ -29,8 +35,10 @@ class App extends Component
      return (
             <div>
                  <SearchBar />
-                 <VideoDetail video={this.state.videos[0]} />
-                 <VideoList  videos={ this.state.videos } />
+                 <VideoDetail video={this.state.selectedVideo} />
+                 <VideoList
+                    onVideoSelect={selectVideo => this.setState({selectedVideo}) }
+                    videos={ this.state.videos } />
             </div>
        );
    }
